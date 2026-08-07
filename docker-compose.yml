@@ -53,6 +53,25 @@ services:
     environment:
       - CONTAINER_WORKSPACE=${CONTAINER_WORKSPACE:-/app}
 
+  biomate:
+    build:
+      context: ../BioMate
+      dockerfile: Dockerfile
+    network_mode: host
+    volumes:
+      - ./data:/data
+      - ./results:/results
+      - ./inputs:/inputs
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: ["web-interface", "--host", "127.0.0.1", "--port", "8080"]
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
 volumes:
   couchdb-data:
 
