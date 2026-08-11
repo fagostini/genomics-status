@@ -57,6 +57,8 @@ services:
     build:
       context: ../BioMate
       dockerfile: Dockerfile
+    profiles:
+      - biomate
     network_mode: host
     volumes:
       - ./data:/data
